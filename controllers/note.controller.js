@@ -1,8 +1,9 @@
 const noteService = require('../services/note.service');
 
-//POST /note
-const newNote = async (req, res, next) => {
+//POST :user/note
+const addNote = async (req, res, next) => {
 
+    const userId = req.user.id; //req.user is set by middleware auth.js
     const { title, body, createdAt } = req.body;
 
     let result = {
@@ -17,7 +18,7 @@ const newNote = async (req, res, next) => {
     }
 
     try {
-        const data = await noteService.newNote(title, body, createdAt);
+        const data = await noteService.addNote(userId, title, body, createdAt);
         result.message = "New note added!";
         result.status = 201; // status code for 'Created'
         result.data = data;
@@ -34,7 +35,8 @@ const newNote = async (req, res, next) => {
 //PATCH /note/:id
 const editNote = async (req, res, next) => {
 
-    const id = req.params.id;
+    const userId = req.user.id;
+    const noteId = req.params.id;
     const { title, body } = req.body;
 
     let result = {
@@ -44,7 +46,7 @@ const editNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.editNote(id, title, body);
+        const data = await noteService.editNote(userId, noteId, title, body);
         result.message = `Edited note id ${id}`;
         result.status = 200;
         result.data = data;
@@ -61,7 +63,8 @@ const editNote = async (req, res, next) => {
 //DELETE /note/:id
 const deleteNote = async (req, res, next) => {
 
-    const id = req.params.id;
+    const userId = req.user.id;
+    const noteId = req.params.id;
 
     let result = {
         message: null,
@@ -70,7 +73,7 @@ const deleteNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.deleteNote(id);
+        const data = await noteService.deleteNote(userId, noteId);
         result.message = `Deleted note id ${id}`;
         result.status = 204;
         result.data = data;
@@ -87,7 +90,8 @@ const deleteNote = async (req, res, next) => {
 //GET /note/:id
 const getOneNote = async (req, res, next) => {
 
-    const id = req.params.id;
+    const userId = req.user.id;
+    const noteId = req.params.id;
 
     let result = {
         message: null,
@@ -96,7 +100,7 @@ const getOneNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.getOneNote(id);
+        const data = await noteService.getOneNote(userId, noteId);
         result.message = `Displaying note id ${id}`;
         result.status = 200;
         result.data = data;
@@ -113,6 +117,8 @@ const getOneNote = async (req, res, next) => {
 //GET /note
 const getAllNotes = async (req, res, next) => {
 
+    const userId = req.user.id;
+
     let result = {
         message: null,
         status: null,
@@ -120,7 +126,7 @@ const getAllNotes = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.getAllNotes();
+        const data = await noteService.getAllNotes(userId);
         result.message = "Displaying all notes";
         result.status = 200;
         result.data = data;
@@ -134,4 +140,4 @@ const getAllNotes = async (req, res, next) => {
 
 };
 
-module.exports = { newNote, editNote, deleteNote, getOneNote, getAllNotes }; 
+module.exports = { addNote, editNote, deleteNote, getOneNote, getAllNotes }; 

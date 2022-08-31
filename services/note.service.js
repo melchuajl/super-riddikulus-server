@@ -2,35 +2,36 @@ const Note = require('../models/note.model');
 
 module.exports = {
 
-    newNote: async (title, body) => {
+    addNote: async (userId, title, body, createdAt) => {
 
-        const note = await Note.create({
-            title: title,
-            body: body,
-            createdAt: Date()
+        const newNote = await Note.create({ //should this be InsertOne? 
+            userId,
+            title,
+            body,
+            createdAt
         });
 
-        return note.save();
+        return newNote.save();
     },
 
-    editNote: async () => {
-
-
-    },
-
-    deleteNote: async () => {
+    editNote: async (userId, noteId, title, body) => {
 
 
     },
 
-    getOneNote: async () => {
+    deleteNote: async (userId, noteId) => {
 
 
     },
 
-    getAllNotes: async () => {
+    getOneNote: async (userId, noteId) => {
 
-        
+
+    },
+
+    getAllNotes: async (userId) => {
+        const notes = await Note.find({ userId: userId });
+        return notes;
     }
 
 }; 

@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-/* const { newNote, editNote, deleteNote, getOneNote, getAllNotes } = require('../controllers/note.controller');
+/* const { addNote, editNote, deleteNote, getOneNote, getAllNotes } = require('../controllers/note.controller');
 const auth = require('../middleware/auth');
 
-//Create new note
-router.post('/note', auth, newNote)
+//Add new note
+router.post('/note', auth, addNote)
 
 //Edit note
 router.patch('/note/:id', auth, editNote)
