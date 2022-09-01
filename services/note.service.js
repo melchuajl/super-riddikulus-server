@@ -4,7 +4,7 @@ module.exports = {
 
     addNote: async (userId, title, body, createdAt) => {
 
-        const newNote = await Note.create({ //should this be InsertOne? 
+        const newNote = await Note.create({ //should this be Note.insertOne? 
             userId,
             title,
             body,
@@ -14,17 +14,17 @@ module.exports = {
         return newNote.save();
     },
 
-    editNote: async (userId, noteId, title, body) => {
+    editNote: async (userId, noteId, title, body) => { // Note.updateOne
 
 
     },
 
-    deleteNote: async (userId, noteId) => {
+    deleteNote: async (userId, noteId) => { // Note.deleteOne
 
 
     },
 
-    getOneNote: async (userId, noteId) => {
+    getOneNote: async (userId, noteId) => { // Note.findOne().where()
 
 
     },
