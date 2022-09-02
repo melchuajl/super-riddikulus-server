@@ -2,12 +2,12 @@ const Note = require('../models/note.model');
 
 module.exports = {
 
-    addNote: async (userId, title, body, createdAt) => {
+    addNote: async (/* userId,  */title, body, createdAt) => {
 
         const newNote = await Note.create({ // should this be Note.insertOne? 
-            userId, 
-            title: title,
-            body: body,
+            /* userId, */ 
+            title,
+            body,
             createdAt
         });
 
