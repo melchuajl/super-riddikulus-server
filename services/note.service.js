@@ -6,8 +6,8 @@ module.exports = {
 
         const newNote = await Note.create({ // should this be Note.insertOne? 
             userId, 
-            title,
-            body,
+            title: title,
+            body: body,
             createdAt
         });
 
