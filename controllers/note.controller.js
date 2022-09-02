@@ -42,7 +42,7 @@ const editNote = async (req, res, next) => {
 
     try {
         const data = await noteService.editNote(/* userId, */ noteId, title, body);
-        result.message = `Edited note id ${id}`;
+        result.message = `Edited note ID ${noteId}`;
         result.status = 200;
         result.data = data;
     } catch (error) {
@@ -69,7 +69,7 @@ const deleteNote = async (req, res, next) => {
 
     try {
         const data = await noteService.deleteNote(/* userId, */ noteId);
-        result.message = `Deleted note id ${id}`;
+        result.message = `Deleted note ID ${noteId}`;
         result.status = 204;
         result.data = data;
     } catch (error) {
@@ -96,13 +96,13 @@ const getOneNote = async (req, res, next) => {
 
     try {
         const data = await noteService.getOneNote(/* userId, */ noteId);
-        result.message = `Displaying note id ${id}`;
+        result.message = `Displaying note ID ${noteId}`;
         result.status = 200;
         result.data = data;
     } catch (error) {
         console.error(error);
         result.message = error.message;
-        result.status = 400;
+        result.status = 404; // Code for 'Not found'
     } finally {
         return res.json(result);
     }
