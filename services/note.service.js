@@ -5,7 +5,7 @@ module.exports = {
     addNote: async (userId, title, body, createdAt) => {
 
         const newNote = await Note.create({ //should this be Note.insertOne? 
-            userId,
+            userId, 
             title,
             body,
             createdAt
@@ -14,7 +14,7 @@ module.exports = {
         return newNote.save();
     },
 
-    editNote: async (userId, noteId, title, body) => { // Note.updateOne
+    editNote: async (userId, noteId, title, body) => { // Note.findOneAndUpdate
 
 
     },
@@ -29,8 +29,8 @@ module.exports = {
 
     },
 
-    getAllNotes: async (userId) => {
-        const notes = await Note.find({ userId: userId });
+    getAllNotes: async () => {
+        const notes = await Note.find();
         return notes;
     }
 

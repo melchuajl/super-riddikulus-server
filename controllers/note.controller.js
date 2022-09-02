@@ -1,9 +1,9 @@
 const noteService = require('../services/note.service');
 
-//POST :user/note
+//POST /note
 const addNote = async (req, res, next) => {
 
-    const userId = req.user.id; //req.user is set by middleware auth.js
+    // const userId = req.user.id; //req.user is set by middleware auth.js
     const { title, body, createdAt } = req.body;
 
     let result = {
@@ -12,15 +12,10 @@ const addNote = async (req, res, next) => {
         data: null,
     };
 
-    if (!title || !body || !createdAt ) {
-        res.status(400);
-        return res.json({ message: "Incomplete input fields" })
-    }
-
     try {
-        const data = await noteService.addNote(userId, title, body, createdAt);
+        const data = await noteService.addNote(/* userId, */ title, body, createdAt);
         result.message = "New note added!";
-        result.status = 201; // status code for 'Created'
+        result.status = 201; // Code for 'Successfully created'
         result.data = data;
     } catch (error) {
         console.error(error); 
@@ -35,7 +30,7 @@ const addNote = async (req, res, next) => {
 //PATCH /note/:id
 const editNote = async (req, res, next) => {
 
-    const userId = req.user.id;
+    // const userId = req.user.id;
     const noteId = req.params.id;
     const { title, body } = req.body;
 
@@ -46,7 +41,7 @@ const editNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.editNote(userId, noteId, title, body);
+        const data = await noteService.editNote(/* userId, */ noteId, title, body);
         result.message = `Edited note id ${id}`;
         result.status = 200;
         result.data = data;
@@ -63,7 +58,7 @@ const editNote = async (req, res, next) => {
 //DELETE /note/:id
 const deleteNote = async (req, res, next) => {
 
-    const userId = req.user.id;
+    // const userId = req.user.id;
     const noteId = req.params.id;
 
     let result = {
@@ -73,7 +68,7 @@ const deleteNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.deleteNote(userId, noteId);
+        const data = await noteService.deleteNote(/* userId, */ noteId);
         result.message = `Deleted note id ${id}`;
         result.status = 204;
         result.data = data;
@@ -90,7 +85,7 @@ const deleteNote = async (req, res, next) => {
 //GET /note/:id
 const getOneNote = async (req, res, next) => {
 
-    const userId = req.user.id;
+    // const userId = req.user.id;
     const noteId = req.params.id;
 
     let result = {
@@ -100,7 +95,7 @@ const getOneNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.getOneNote(userId, noteId);
+        const data = await noteService.getOneNote(/* userId, */ noteId);
         result.message = `Displaying note id ${id}`;
         result.status = 200;
         result.data = data;
@@ -117,7 +112,7 @@ const getOneNote = async (req, res, next) => {
 //GET /note
 const getAllNotes = async (req, res, next) => {
 
-    const userId = req.user.id;
+    // const userId = req.user.id;
 
     let result = {
         message: null,
@@ -126,14 +121,14 @@ const getAllNotes = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.getAllNotes(userId);
+        const data = await noteService.getAllNotes(/* userId*/);
         result.message = "Displaying all notes";
         result.status = 200;
         result.data = data;
     } catch (error) {
         console.error(error);
         result.message = error.message;
-        result.status = 400;
+        result.status = 500; // Code for server-side error
     } finally {
         return res.json(result);
     }

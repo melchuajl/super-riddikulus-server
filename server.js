@@ -14,6 +14,7 @@ const db = mongoose.connection;
 db.once('open', () => console.log('Connected to database!'));
 db.on('error', (error) => console.error(error));
 
+//Test to check connection
 app.get('/', (req, res) => {
     res.send(`WELCOME ONE AND ALL \n pew pew pew`)
 });
