@@ -1,35 +1,47 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const mongoose = require ("mongoose");
-const User = require("../models/user.model");
 const userService = require('../services/user.service');
 const { registerOneUser } = require("../services/user.service");
 
 
 //POST /note
-const registerUser = async (req, res, next) => {
+const registerUser = async (req, res) => {
 
     // const userId = req.user.id; //req.user is set by middleware auth.js
     const { username, email, password } = req.body;
 
+    let result = {
+        message: null,
+        status: null,
+        data: null,
+    };
+
     try {
-        const result = await registerOneUser(username, email, password);
-        res.status(201).json(result);
+        const data = await registerOneUser(username, email, password);
+        result.message = "New user added!";
+        result.status = 201; // Code for 'Successfully created'
+        result.data = data;
     } catch(error) {
-        next({status: 400, message: error});
+        console.error(error); 
+            result.message = error.message;
+            result.status = 400;
     } finally {
-        next();
+        return res.json(result);
     }
     }
 
 
-    const loginUser = async(req, res, next) => {
+    const loginUser = async(req, res) => {
         const {email, password} = req.body;
         
+        let result = {
+            message: null,
+            status: null,
+            data: null,
+        };
+
         try {
             const result = await userService.loginOneUser(email, password);
-            result.message = "New note added!";
-            result.status = 201; // Code for 'Successfully created'
+            result.message = `user ${email} logged in!`;
+            result.status = 201;
             result.data = data;
         } catch (error) {
             console.error(error); 
@@ -45,11 +57,10 @@ const registerUser = async (req, res, next) => {
 
 
 //PATCH /note/:id
-const editNote = async (req, res, next) => {
+const getProfile = async (req, res) => {
 
     // const userId = req.user.id;
-    const noteId = req.params.id;
-    const { title, body } = req.body;
+    const user = req.user.id;
 
     let result = {
         message: null,
@@ -58,8 +69,8 @@ const editNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.editNote(/* userId, */ noteId, title, body);
-        result.message = `Edited note ID ${noteId}`;
+        const data = await userService.getUserProfile(user);
+        result.message = `User ${user} details retrieved!`;
         result.status = 200;
         result.data = data;
     } catch (error) {
@@ -73,10 +84,11 @@ const editNote = async (req, res, next) => {
 };
 
 //DELETE /note/:id
-const deleteNote = async (req, res, next) => {
+const updateProfile = async (req, res) => {
 
     // const userId = req.user.id;
-    const noteId = req.params.id;
+    const user = req.user.id;
+    const body = req.body;
 
     let result = {
         message: null,
@@ -85,9 +97,9 @@ const deleteNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.deleteNote(/* userId, */ noteId);
-        result.message = `Deleted note ID ${noteId}`;
-        result.status = 204;
+        const data = await userService.updateUserProfile(user, body);
+        result.message = `${user} updated`;
+        result.status = 200;
         result.data = data;
     } catch (error) {
         console.error(error);
@@ -100,10 +112,10 @@ const deleteNote = async (req, res, next) => {
 };
 
 //GET /note/:id
-const getOneNote = async (req, res, next) => {
+const logoutUser = async (req, res) => {
 
     // const userId = req.user.id;
-    const noteId = req.params.id;
+    const user = req.user.id;
 
     let result = {
         message: null,
@@ -112,8 +124,8 @@ const getOneNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.getOneNote(/* userId, */ noteId);
-        result.message = `Displaying note ID ${noteId}`;
+        const result = await userService.logoutOneUser(/* userId, */ user);
+        result.message = `Successfully logged out ${user}`;
         result.status = 200;
         result.data = data;
     } catch (error) {
@@ -126,30 +138,4 @@ const getOneNote = async (req, res, next) => {
 
 };
 
-//GET /note
-const getAllNotes = async (req, res, next) => {
-
-    // const userId = req.user.id;
-
-    let result = {
-        message: null,
-        status: null,
-        data: null,
-    };
-
-    try {
-        const data = await noteService.getAllNotes(/* userId*/);
-        result.message = "Displaying all notes";
-        result.status = 200;
-        result.data = data;
-    } catch (error) {
-        console.error(error);
-        result.message = error.message;
-        result.status = 500; // Code for server-side error
-    } finally {
-        return res.json(result);
-    }
-
-};
-
-module.exports = { addNote, editNote, deleteNote, getOneNote, getAllNotes }; 
+module.exports = { registerUser, loginUser, getProfile, updateProfile, logoutUser }; 
