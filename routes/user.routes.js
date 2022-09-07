@@ -6,16 +6,19 @@ const { registerUser, loginUser, logoutUser, getProfile, updateProfile } = requi
 
 const { isLoggedIn } = require('../middleware/auth');
 
+//Get all user
+/* router.get('/user', viewAllUser); */
+
 //Add new user
-router.post('/user', /* isLoggedIn,  */ registerUser);
+router.post('/user', registerUser);
 
-//Edit note
-router.post('/user/login', /* isLoggedIn,  */ loginUser);
+//login
+router.post('/user/login', loginUser);
 
-//Delete note
-router.delete('/user/logout', /* isLoggedIn,  */ logoutUser);
+//logout
+router.delete('/user/logout', isLoggedIn,  logoutUser);
 
-//Fetch all notes
-router.route('/user/profile').get(/* isLoggedIn, */ getProfile).put(/* isLoggedIn, */ updateProfile);
+//Retrieve and/or edit profile
+router.route('/user/profile').get(isLoggedIn, getProfile).put(isLoggedIn, updateProfile);
 
 module.exports = router; 

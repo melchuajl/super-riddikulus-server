@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
 
     try {
         const data = await registerOneUser(username, email, password);
-        result.message = "New user added!";
+        result.message = `New user ${username}  added!`;
         result.status = 201; // Code for 'Successfully created'
         result.data = data;
     } catch(error) {
@@ -39,10 +39,10 @@ const registerUser = async (req, res) => {
         };
 
         try {
-            const result = await userService.loginOneUser(email, password);
+            const data = await userService.loginOneUser(email, password);
             result.message = `user ${email} logged in!`;
             result.status = 201;
-            result.data = data;
+            result.data = data
         } catch (error) {
             console.error(error); 
             result.message = error.message;
@@ -60,7 +60,7 @@ const registerUser = async (req, res) => {
 const getProfile = async (req, res) => {
 
     // const userId = req.user.id;
-    const user = req.user.id;
+    const userId = req.user.id;
 
     let result = {
         message: null,
@@ -69,8 +69,8 @@ const getProfile = async (req, res) => {
     };
 
     try {
-        const data = await userService.getUserProfile(user);
-        result.message = `User ${user} details retrieved!`;
+        const data = await userService.getUserProfile(userId);
+        result.message = `User details retrieved!`;
         result.status = 200;
         result.data = data;
     } catch (error) {
@@ -87,7 +87,7 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
 
     // const userId = req.user.id;
-    const user = req.user.id;
+    const userId = req.user.id;
     const body = req.body;
 
     let result = {
@@ -97,8 +97,8 @@ const updateProfile = async (req, res) => {
     };
 
     try {
-        const data = await userService.updateUserProfile(user, body);
-        result.message = `${user} updated`;
+        const data = await userService.updateUserProfile(userId, body);
+        result.message = `Profile details updated!`;
         result.status = 200;
         result.data = data;
     } catch (error) {
@@ -115,7 +115,7 @@ const updateProfile = async (req, res) => {
 const logoutUser = async (req, res) => {
 
     // const userId = req.user.id;
-    const user = req.user.id;
+    const userId = req.user.id;
 
     let result = {
         message: null,
@@ -124,8 +124,8 @@ const logoutUser = async (req, res) => {
     };
 
     try {
-        const result = await userService.logoutOneUser(/* userId, */ user);
-        result.message = `Successfully logged out ${user}`;
+        const data = await userService.logoutOneUser(/* userId, */ userId);
+        result.message = `Successfully logged out ${userId}`;
         result.status = 200;
         result.data = data;
     } catch (error) {

@@ -48,47 +48,49 @@ module.exports = {
 
     loginOneUser : async (/* userId,  */email, password) => { 
 
-        let result = {};
 
         //check for user
 
         const user = await User.findOne ({ email });
         if (!user) {
-            throw new Error("User not found");
+            throw new Error(`User with email ${email} not found!`);
         }
 
         const passwordCheck = await bcrypt.compare(password, user.password);
-        if (user && passwordCheck) {
-            (result.success = true), (result.message = "Login success!");
+        
+        if (!passwordCheck) {
+            throw new Error("Password does not match");
+        }
 
-            result.data = {
+        if (passwordCheck) {
+            const loginData = {
                 id: user._id,
-                username: user.username,
                 email: user.email,
             };
+          
+        const token = jwt.sign(loginData, process.env.TOKEN_KEY, {
+            expiresIn: "30d",
+        });
 
-            result.token = generateToken(user._id);
-        } else if (!passwordCheck) {
-            throw new Error ('Password does not match!');
+        return token;
         }
-            return result;
     },
 
     getUserProfile: async (user) => { // user
 
-        let result = {};
 
         const userProfile = await User.findById(user);
-        (result.success = true),
-            (result.message = 'User' + user + 'retrieved successfully');
-        result.data = userProfile;
+        if (!userProfile) {
+            throw new Error(`Profile ${user} cannot be fetched`)
+        }
 
-        return result;
+
+        return userProfile;
 
     },
 
     updateUserProfile: async (user, body) => { 
-        let result = {};
+        
 
         const userExists = await User.findById(user);
         if (!userExists) {
@@ -98,24 +100,35 @@ module.exports = {
         const updateProfile = await User.findByIdAndUpdate(user, body, {
             new: true,
         });
-
-        result.success = 'true';
-        result.message = `Updated user ${user} profile successfully`;
-        result.data = updateProfile;
-        
-        return result;
+  
+        return updateProfile;
     },
 
     logoutOneUser: async (user) => {
-        let result = {};
+
         const userExists = await User.findById(user);
-        if (userExists) {
-            (result.success = true), (result.message = "Logout successfully!");
-            result.data = {
+        if (!userExists) {
+            throw new Error("User not found");
+        } 
+
+/*         const expiryToken = {
                 token: expiredToken(userExists._id),
+            }; */
+
+            const loginData = {
+                id: user._id,
+                email: user.email,
             };
+
+            const expiredToken = jwt.sign(loginData, process.env.TOKEN_KEY, {
+                expiresIn: "1ms",
+            });
+
+            return expiredToken;
         }
-        return result;
-    }
+
+    
+
+
 
 }; 
