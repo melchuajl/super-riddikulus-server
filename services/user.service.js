@@ -1,15 +1,6 @@
 const User = require('../models/user.model');
-const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-
-const generateToken= (id) => {
-    return jwt.sign({ id }, process.env.TOKEN_KEY, { expiresIn: "30d"});
-};
-
-const expiredToken = (id) => {
-    return jwt.sign({ id }, process.env.TOKEN_KEY, {expiresIn: "1ms"});
-};
 
 module.exports = {
 

@@ -2,7 +2,7 @@ const userService = require('../services/user.service');
 const { registerOneUser } = require("../services/user.service");
 
 
-//POST /note
+//POST /user
 const registerUser = async (req, res) => {
 
     // const userId = req.user.id; //req.user is set by middleware auth.js
@@ -28,7 +28,7 @@ const registerUser = async (req, res) => {
     }
     }
 
-
+//POST /user/login
     const loginUser = async(req, res) => {
         const {email, password} = req.body;
         
@@ -56,10 +56,10 @@ const registerUser = async (req, res) => {
 
 
 
-//PATCH /note/:id
+//get /user/profile
 const getProfile = async (req, res) => {
 
-    // const userId = req.user.id;
+
     const userId = req.user.id;
 
     let result = {
@@ -83,7 +83,7 @@ const getProfile = async (req, res) => {
 
 };
 
-//DELETE /note/:id
+//PUT user/profile
 const updateProfile = async (req, res) => {
 
     // const userId = req.user.id;
@@ -111,7 +111,7 @@ const updateProfile = async (req, res) => {
 
 };
 
-//GET /note/:id
+//POST /user/logout
 const logoutUser = async (req, res) => {
 
     // const userId = req.user.id;
