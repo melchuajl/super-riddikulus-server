@@ -35,14 +35,20 @@ const registerUser = async (req, res) => {
         let result = {
             message: null,
             status: null,
-            data: null,
+            data: {
+                token: null,
+                email: null,
+            },
         };
 
         try {
             const data = await userService.loginOneUser(email, password);
             result.message = `user ${email} logged in!`;
             result.status = 201;
-            result.data = data
+            result.data = {
+                token: data,
+                email: email
+            }
         } catch (error) {
             console.error(error); 
             result.message = error.message;
