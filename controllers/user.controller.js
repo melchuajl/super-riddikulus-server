@@ -38,6 +38,9 @@ const registerUser = async (req, res) => {
             data: {
                 token: null,
                 email: null,
+                name: null,
+                gender: null,
+                id: null,
             },
         };
 
@@ -45,10 +48,7 @@ const registerUser = async (req, res) => {
             const data = await userService.loginOneUser(email, password);
             result.message = `user ${email} logged in!`;
             result.status = 201;
-            result.data = {
-                token: data,
-                email: email
-            }
+            result.data = data;
         } catch (error) {
             console.error(error); 
             result.message = error.message;
