@@ -1,12 +1,12 @@
 const userService = require('../services/user.service');
-const { registerOneUser } = require("../services/user.service");
+const { registerOneUser, addOneSpell } = require("../services/user.service");
 
 
 //POST /user
 const registerUser = async (req, res) => {
 
     // const userId = req.user.id; //req.user is set by middleware auth.js
-    const { username, email, password } = req.body;
+    const { username, email, password, gender} = req.body;
 
     let result = {
         message: null,
@@ -15,7 +15,7 @@ const registerUser = async (req, res) => {
     };
 
     try {
-        const data = await registerOneUser(username, email, password);
+        const data = await registerOneUser(username, email, password, gender);
         result.message = `New user ${username}  added!`;
         result.status = 201; // Code for 'Successfully created'
         result.data = data;
@@ -144,4 +144,29 @@ const logoutUser = async (req, res) => {
 
 };
 
-module.exports = { registerUser, loginUser, getProfile, updateProfile, logoutUser }; 
+//POST /spells
+const addSpell = async(req, res) => {
+    const {user, body} = req.body;
+    let result = {
+        message: null,
+        status: null,
+        data: null,
+    };
+
+    try {
+        const data = await addOneSpell(user, body);
+        result.message = `${body} saved!`;
+        result.status = 201;
+        result.data = data;
+        console.log(body)
+    } catch (error) {
+        console.error(error); 
+        result.message = error.message;
+        result.status = 400;
+    } finally {
+        return res.json(result);
+    }
+
+}
+
+module.exports = { registerUser, loginUser, getProfile, updateProfile, logoutUser, addSpell }; 

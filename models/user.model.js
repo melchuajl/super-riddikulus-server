@@ -19,6 +19,14 @@ const UserSchema = new mongoose.Schema(
         gender: {
             type: String,
         },
+        spells: {
+            type: Array,
+            "default":[]
+        },
+
+        elixirs: {
+            type: Array,
+        }
     },
     {
         timestamps: true,

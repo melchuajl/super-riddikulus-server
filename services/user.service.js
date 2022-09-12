@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 module.exports = {
 
-    registerOneUser : async (username, email, password) => {
+    registerOneUser : async (username, email, password, gender) => {
 
         let result = {};
 
@@ -23,6 +23,7 @@ module.exports = {
             username,
             email,
             password: hashedPassword,
+            gender,
         });
 
         if (user) {
@@ -31,6 +32,8 @@ module.exports = {
             id: user._id,
             username: user.username,
             email: user.email,
+            gender: user.gender,
+            spells:user.spells
            };
         }
         return result;
@@ -92,13 +95,14 @@ module.exports = {
 
     updateUserProfile: async (user, body) => { 
         
+        const _id = user
 
-        const userExists = await User.findById(user);
+        const userExists = await User.findOne(_id);
         if (!userExists) {
             throw new Error("User not found");
         }
 
-        const updateProfile = await User.findByIdAndUpdate(user, body, {
+        const updateProfile = await User.findOneAndUpdate(_id, body, {
             new: true,
         });
   
@@ -126,8 +130,34 @@ module.exports = {
             });
 
             return expiredToken;
-        }
+        },
 
+
+        addOneSpell: async ( user, body ) => {
+
+            const userExists = await User.findById(user);
+        if (!userExists) {
+            throw new Error(`User ${user} not found`);
+        } 
+
+
+        const newSpell = await User.findByIdAndUpdate(user, {'$push': {
+            spells: body
+        }
+     },
+           { 
+                new: true
+            });
+
+/*             const returnData = {
+                id: userExists.id,
+                name : userExists.name,
+            } */
+    
+            
+            await newSpell.save();
+            return newSpell;
+        },
     
 
 
