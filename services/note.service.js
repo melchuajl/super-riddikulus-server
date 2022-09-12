@@ -2,10 +2,10 @@ const Note = require('../models/note.model');
 
 module.exports = {
 
-    addNote: async (/* userId,  */title, body, createdAt) => {
+    addNote: async (userId, title, body, createdAt) => {
 
-        const newNote = await Note.create({ // should this be Note.insertOne? 
-            /* userId, */ 
+        const newNote = await Note.create({ 
+            userId,
             title,
             body,
             createdAt
@@ -16,7 +16,7 @@ module.exports = {
 
     editNote: async (/* userId,  */noteId, title, body) => { // Note.findOneAndUpdate
 
-        const noteToEdit = await Note.findById(noteId); 
+        const noteToEdit = await Note.findById(noteId);
 
         if (!noteToEdit) {
             throw new Error(`Note ID ${noteId} does not exist`)
@@ -25,14 +25,14 @@ module.exports = {
         if (title) noteToEdit.title = title;
         if (body) noteToEdit.body = body;
 
-        await noteToEdit.save(); 
-        return noteToEdit; 
+        await noteToEdit.save();
+        return noteToEdit;
 
     },
 
     deleteNote: async (/* userId,  */noteId) => { // Note.deleteOne
 
-        const noteToDelete = await Note.findById(noteId); 
+        const noteToDelete = await Note.findById(noteId);
 
         if (!noteToDelete) {
             throw new Error(`Note ID ${noteId} does not exist`)
@@ -43,13 +43,13 @@ module.exports = {
 
     },
 
-    getOneNote: async (/* userId,  */noteId) => { 
+    getOneNote: async (/* userId,  */noteId) => {
         const note = await Note.findById(noteId);
         return note;
     },
 
-    getAllNotes: async () => {
-        const notes = await Note.find();
+    getAllNotes: async (userId) => {
+        const notes = await Note.find({ userId: userId });
         return notes;
     }
 
