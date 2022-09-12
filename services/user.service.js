@@ -39,7 +39,7 @@ module.exports = {
 
     loginOneUser : async (/* userId,  */email, password) => { 
 
-
+        
         //check for user
 
         const user = await User.findOne ({ email });
@@ -63,7 +63,17 @@ module.exports = {
             expiresIn: "30d",
         });
 
-        return token;
+            const returnData = {
+                id: user._id,
+                name : user.username,
+                email: user.email,
+                gender: user.gender,
+                token: token,
+                
+                
+            }
+
+        return returnData;
         }
     },
 
