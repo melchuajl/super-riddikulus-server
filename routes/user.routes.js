@@ -6,9 +6,6 @@ const { registerUser, loginUser, logoutUser, getProfile, updateProfile, addSpell
 
 const { isLoggedIn } = require('../middleware/auth');
 
-//Get all user
-/* router.get('/user', viewAllUser); */
-
 //Add new user
 router.post('/user', registerUser);
 

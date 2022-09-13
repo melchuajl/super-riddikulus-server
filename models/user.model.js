@@ -17,13 +17,15 @@ const UserSchema = new mongoose.Schema(
             required: true
         },
         gender: {
-            type: String,
+            type: String
+        },
+        house: {
+            type: String
         },
         spells: {
             type: Array,
             "default":[]
         },
-
         elixirs: {
             type: Array,
             "default":[]

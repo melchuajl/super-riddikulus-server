@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
     res.send(`WELCOME ONE AND ALL \n pew pew pew`)
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3008;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

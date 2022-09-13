@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 module.exports = {
 
-    registerOneUser : async (username, email, password, gender) => {
+    registerOneUser : async (username, email, password, gender, house) => {
 
         let result = {};
 
@@ -24,6 +24,7 @@ module.exports = {
             email,
             password: hashedPassword,
             gender,
+            house
         });
 
         if (user) {
@@ -32,17 +33,15 @@ module.exports = {
             id: user._id,
             username: user.username,
             email: user.email,
-            gender: user.gender,
-            spells:user.spells
+            gender: user.gender, 
+            house: user.house
            };
         }
         return result;
-        
     },
 
     loginOneUser : async (/* userId,  */email, password) => { 
 
-        
         //check for user
 
         const user = await User.findOne ({ email });
@@ -71,26 +70,22 @@ module.exports = {
                 name : user.username,
                 email: user.email,
                 gender: user.gender,
-                token: token,
-                
-                
+                house: user.house,
+                token: token
             }
 
         return returnData;
         }
     },
 
-    getUserProfile: async (user) => { // user
-
+    getUserProfile: async (user) => { 
 
         const userProfile = await User.findById(user);
         if (!userProfile) {
             throw new Error(`Profile ${user} cannot be fetched`)
         }
 
-
         return userProfile;
-
     },
 
     updateUserProfile: async (user, body) => { 
@@ -98,6 +93,7 @@ module.exports = {
         const _id = user
 
         const userExists = await User.findOne(_id);
+
         if (!userExists) {
             throw new Error("User not found");
         }
