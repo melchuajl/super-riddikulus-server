@@ -141,7 +141,7 @@ module.exports = {
         } 
 
 
-        const newSpell = await User.findByIdAndUpdate(user, {'$push': {
+        const newSpell = await User.findByIdAndUpdate(user, {$push: {
             spells: body
         }
      },

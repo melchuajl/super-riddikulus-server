@@ -22,6 +22,6 @@ router.delete('/user/logout', isLoggedIn,  logoutUser);
 router.route('/user/profile').get(isLoggedIn, getProfile).put(isLoggedIn, updateProfile);
 
 // Retrieve / Add / Delete  savedSpells for user
-router.route('/spells')/* .get(isLoggedIn, getSpells) */.put(isLoggedIn, addSpell)/* .delete(isLoggedIn, deleteSpell) */;
+router.route('/spells')/* .get(isLoggedIn, getSpells) */.put(/* isLoggedIn, */ addSpell)/* .delete(isLoggedIn, deleteSpell) */;
 
 module.exports = router; 
