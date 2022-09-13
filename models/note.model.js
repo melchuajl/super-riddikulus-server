@@ -17,14 +17,6 @@ const NoteSchema = new mongoose.Schema(
             type: String,
             require: true, 
             default: "This is a default note body"
-        },
-        createdAt: {
-            type: Date,
-            default: Date.now
-        },
-        updatedAt: {
-            type: Date,
-            default: Date.now
         }
     },
     {

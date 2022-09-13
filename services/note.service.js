@@ -2,13 +2,12 @@ const Note = require('../models/note.model');
 
 module.exports = {
 
-    addNote: async (userId, title, body, createdAt) => {
+    addNote: async (userId, title, body) => {
 
-        const newNote = await Note.create({ 
+        const newNote = await Note.create({
             userId,
             title,
-            body,
-            createdAt
+            body
         });
 
         return newNote.save();

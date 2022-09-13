@@ -6,7 +6,7 @@ const { registerOneUser } = require("../services/user.service");
 const registerUser = async (req, res) => {
 
     // const userId = req.user.id; //req.user is set by middleware auth.js
-    const { username, email, password } = req.body;
+    const { username, email, password, gender, house } = req.body;
 
     let result = {
         message: null,
@@ -15,8 +15,8 @@ const registerUser = async (req, res) => {
     };
 
     try {
-        const data = await registerOneUser(username, email, password);
-        result.message = `New user ${username}  added!`;
+        const data = await registerOneUser(username, email, password, gender, house);
+        result.message = `New user ${username} added!`;
         result.status = 201; // Code for 'Successfully created'
         result.data = data;
     } catch(error) {
@@ -40,13 +40,14 @@ const registerUser = async (req, res) => {
                 email: null,
                 name: null,
                 gender: null,
+                house: null,
                 id: null,
             },
         };
 
         try {
             const data = await userService.loginOneUser(email, password);
-            result.message = `user ${email} logged in!`;
+            result.message = `User ${email} logged in!`;
             result.status = 201;
             result.data = data;
         } catch (error) {

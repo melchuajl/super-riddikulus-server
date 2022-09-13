@@ -17,8 +17,11 @@ const UserSchema = new mongoose.Schema(
             required: true
         },
         gender: {
-            type: String,
+            type: String
         },
+        house: {
+            type: String
+        }
     },
     {
         timestamps: true,

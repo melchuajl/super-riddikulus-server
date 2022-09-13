@@ -5,7 +5,7 @@ const addNote = async (req, res, next) => {
 
     // const userId = req.user.id; //req.user is set by middleware auth.js
     const userId = req.body.userId;
-    const { title, body, createdAt } = req.body;
+    const { title, body } = req.body;
 
     let result = {
         message: null,
@@ -14,7 +14,7 @@ const addNote = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.addNote(userId, title, body, createdAt);
+        const data = await noteService.addNote(userId, title, body);
         result.message = "New note added!";
         result.status = 201; // Code for 'Successfully created'
         result.data = data;
