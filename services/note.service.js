@@ -48,8 +48,8 @@ module.exports = {
         return note;
     },
 
-    getAllNotes: async (userId) => {
-        const notes = await Note.find({ userId: userId });
+    getAllNotes: async () => {
+        const notes = await Note.find();
         return notes;
     }
 

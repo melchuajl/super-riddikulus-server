@@ -113,8 +113,7 @@ const getOneNote = async (req, res, next) => {
 //GET /note
 const getAllNotes = async (req, res, next) => {
 
-    // const userId = req.user.id;
-    const userId = req.body.userId;
+    // const userId = req.body.userId;
 
     let result = {
         message: null,
@@ -123,7 +122,7 @@ const getAllNotes = async (req, res, next) => {
     };
 
     try {
-        const data = await noteService.getAllNotes(userId);
+        const data = await noteService.getAllNotes();
         result.message = "Displaying all notes";
         result.status = 200;
         result.data = data;
