@@ -148,18 +148,32 @@ module.exports = {
            { 
                 new: true
             });
-
-/*             const returnData = {
-                id: userExists.id,
-                name : userExists.name,
-            } */
     
             
             await newSpell.save();
             return newSpell;
         },
     
+        deleteOneSpell: async ( user, body ) => {
 
+            const userExists = await User.findById(user);
+        if (!userExists) {
+            throw new Error(`User ${user} not found`);
+        } 
+
+
+        const removeSpell = await User.findByIdAndUpdate(user, {$pull: {
+            spells: {id: body}
+        }
+     },
+           { 
+                multi: true,
+                new: true,
+            }); 
+            
+            await removeSpell.save();
+            return removeSpell;
+        },
 
 
 }; 

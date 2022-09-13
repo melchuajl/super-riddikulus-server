@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { registerUser, loginUser, logoutUser, getProfile, updateProfile, addSpell } = require('../controllers/user.controller');
+const { registerUser, loginUser, logoutUser, getProfile, updateProfile, addSpell, deleteSpell } = require('../controllers/user.controller');
 
 
 const { isLoggedIn } = require('../middleware/auth');
@@ -22,6 +22,6 @@ router.delete('/user/logout', isLoggedIn,  logoutUser);
 router.route('/user/profile').get(isLoggedIn, getProfile).put(isLoggedIn, updateProfile);
 
 // Retrieve / Add / Delete  savedSpells for user
-router.route('/spells')/* .get(isLoggedIn, getSpells) */.put(/* isLoggedIn, */ addSpell)/* .delete(isLoggedIn, deleteSpell) */;
+router.route('/spells')/* .get(isLoggedIn, getSpells) */.put(/* isLoggedIn, */ addSpell).delete(/* isLoggedIn */ deleteSpell);
 
 module.exports = router; 
