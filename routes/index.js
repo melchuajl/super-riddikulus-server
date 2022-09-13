@@ -11,4 +11,8 @@ const userRoutes = require('./user.routes');
 app.use(noteRoutes);
 app.use(userRoutes);
 
+// ADDING CORS (Cross-Origin Resource Sharing)
+const cors = require('cors');
+app.use(cors());
+
 module.exports = app; 

@@ -21,6 +21,14 @@ const UserSchema = new mongoose.Schema(
         },
         house: {
             type: String
+        },
+        spells: {
+            type: Array,
+            "default":[]
+        },
+        elixirs: {
+            type: Array,
+            "default":[]
         }
     },
     {

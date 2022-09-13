@@ -90,12 +90,15 @@ module.exports = {
 
     updateUserProfile: async (user, body) => { 
         
-        const userExists = await User.findById(user);
+        const _id = user
+
+        const userExists = await User.findOne(_id);
+
         if (!userExists) {
             throw new Error("User not found");
         }
 
-        const updateProfile = await User.findByIdAndUpdate(user, body, {
+        const updateProfile = await User.findOneAndUpdate(_id, body, {
             new: true,
         });
   
@@ -123,7 +126,92 @@ module.exports = {
             });
 
             return expiredToken;
+        },
+
+
+        addOneSpell: async ( user, body ) => {
+
+            const userExists = await User.findById(user);
+        if (!userExists) {
+            throw new Error(`User ${user} not found`);
+        } 
+
+
+        const newSpell = await User.findByIdAndUpdate(user, {$push: {
+            spells: body
         }
+     },
+           { 
+                new: true
+            });
+    
+            
+            await newSpell.save();
+            return newSpell;
+        },
+    
+        deleteOneSpell: async ( user, body ) => {
+
+            const userExists = await User.findById(user);
+        if (!userExists) {
+            throw new Error(`User ${user} not found`);
+        } 
+
+
+        const removeSpell = await User.findByIdAndUpdate(user, {$pull: {
+            spells: {id: body}
+        }
+     },
+           { 
+                multi: true,
+                new: true,
+            }); 
+            
+            await removeSpell.save();
+            return removeSpell;
+        },
+
+        addOneElixir: async ( user, body ) => {
+
+            const userExists = await User.findById(user);
+        if (!userExists) {
+            throw new Error(`User ${user} not found`);
+        } 
+
+
+        const newElixir = await User.findByIdAndUpdate(user, {$push: {
+            elixirs: body
+        }
+     },
+           { 
+                new: true
+            });
+    
+            
+            await newElixir.save();
+            return newElixir;
+        },
+    
+        deleteOneElixir: async ( user, body ) => {
+
+            const userExists = await User.findById(user);
+        if (!userExists) {
+            throw new Error(`User ${user} not found`);
+        } 
+
+
+        const removeElixir = await User.findByIdAndUpdate(user, {$pull: {
+            elixirs: {id: body}
+        }
+     },
+           { 
+                multi: true,
+                new: true,
+            }); 
+            
+            await removeElixir.save();
+            return removeElixir;
+        },
 
 
 }; 

@@ -1,5 +1,5 @@
 const userService = require('../services/user.service');
-const { registerOneUser } = require("../services/user.service");
+const { registerOneUser, addOneSpell, deleteOneSpell, addOneElixir, deleteOneElixir } = require("../services/user.service");
 
 
 //POST /user
@@ -145,4 +145,106 @@ const logoutUser = async (req, res) => {
 
 };
 
-module.exports = { registerUser, loginUser, getProfile, updateProfile, logoutUser }; 
+//PUT /spells
+const addSpell = async(req, res) => {
+    const {user, body} = req.body;
+    let result = {
+        message: null,
+        status: null,
+        data: null,
+    };
+
+    try {
+        const data = await addOneSpell(user, body);
+        result.message = `${body} saved!`;
+        result.status = 201;
+        result.data = data;
+        console.log(body)
+    } catch (error) {
+        console.error(error); 
+        result.message = error.message;
+        result.status = 400;
+    } finally {
+        return res.json(result);
+    }
+
+};
+
+//DEL /spells
+
+const deleteSpell = async(req, res) => {
+    const {user, body} = req.body;
+    let result = {
+        message: null,
+        status: null,
+        data: null,
+    };
+
+    try {
+        const data = await deleteOneSpell(user, body);
+        result.message = `Spell id ${body} deleted!`;
+        result.status = 201;
+        result.data = data;
+        console.log(body)
+    } catch (error) {
+        console.error(error); 
+        result.message = error.message;
+        result.status = 400;
+    } finally {
+        return res.json(result);
+    }
+
+}
+
+//POST /elixirs
+const addElixir = async(req, res) => {
+    const {user, body} = req.body;
+    let result = {
+        message: null,
+        status: null,
+        data: null,
+    };
+
+    try {
+        const data = await addOneElixir(user, body);
+        result.message = `${body} saved!`;
+        result.status = 201;
+        result.data = data;
+        console.log(body)
+    } catch (error) {
+        console.error(error); 
+        result.message = error.message;
+        result.status = 400;
+    } finally {
+        return res.json(result);
+    }
+
+};
+
+
+//DEL / elixirs
+const deleteElixir = async(req, res) => {
+    const {user, body} = req.body;
+    let result = {
+        message: null,
+        status: null,
+        data: null,
+    };
+
+    try {
+        const data = await deleteOneElixir(user, body);
+        result.message = `Elixir id ${body} deleted!`;
+        result.status = 201;
+        result.data = data;
+        console.log(body)
+    } catch (error) {
+        console.error(error); 
+        result.message = error.message;
+        result.status = 400;
+    } finally {
+        return res.json(result);
+    }
+
+}
+
+module.exports = { registerUser, loginUser, getProfile, updateProfile, logoutUser, addSpell, deleteSpell, addElixir, deleteElixir }; 
