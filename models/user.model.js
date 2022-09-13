@@ -26,6 +26,7 @@ const UserSchema = new mongoose.Schema(
 
         elixirs: {
             type: Array,
+            "default":[]
         }
     },
     {

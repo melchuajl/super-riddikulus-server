@@ -1,5 +1,5 @@
 const userService = require('../services/user.service');
-const { registerOneUser, addOneSpell, deleteOneSpell } = require("../services/user.service");
+const { registerOneUser, addOneSpell, deleteOneSpell, addOneElixir, deleteOneElixir } = require("../services/user.service");
 
 
 //POST /user
@@ -144,7 +144,7 @@ const logoutUser = async (req, res) => {
 
 };
 
-//POST /spells
+//PUT /spells
 const addSpell = async(req, res) => {
     const {user, body} = req.body;
     let result = {
@@ -195,4 +195,55 @@ const deleteSpell = async(req, res) => {
 
 }
 
-module.exports = { registerUser, loginUser, getProfile, updateProfile, logoutUser, addSpell, deleteSpell }; 
+//POST /elixirs
+const addElixir = async(req, res) => {
+    const {user, body} = req.body;
+    let result = {
+        message: null,
+        status: null,
+        data: null,
+    };
+
+    try {
+        const data = await addOneElixir(user, body);
+        result.message = `${body} saved!`;
+        result.status = 201;
+        result.data = data;
+        console.log(body)
+    } catch (error) {
+        console.error(error); 
+        result.message = error.message;
+        result.status = 400;
+    } finally {
+        return res.json(result);
+    }
+
+};
+
+
+//DEL / elixirs
+const deleteElixir = async(req, res) => {
+    const {user, body} = req.body;
+    let result = {
+        message: null,
+        status: null,
+        data: null,
+    };
+
+    try {
+        const data = await deleteOneElixir(user, body);
+        result.message = `Elixir id ${body} deleted!`;
+        result.status = 201;
+        result.data = data;
+        console.log(body)
+    } catch (error) {
+        console.error(error); 
+        result.message = error.message;
+        result.status = 400;
+    } finally {
+        return res.json(result);
+    }
+
+}
+
+module.exports = { registerUser, loginUser, getProfile, updateProfile, logoutUser, addSpell, deleteSpell, addElixir, deleteElixir }; 

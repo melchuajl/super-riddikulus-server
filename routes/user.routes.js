@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { registerUser, loginUser, logoutUser, getProfile, updateProfile, addSpell, deleteSpell } = require('../controllers/user.controller');
+const { registerUser, loginUser, logoutUser, getProfile, updateProfile, addSpell, deleteSpell, addElixir, deleteElixir,  } = require('../controllers/user.controller');
 
 
 const { isLoggedIn } = require('../middleware/auth');
@@ -23,5 +23,8 @@ router.route('/user/profile').get(isLoggedIn, getProfile).put(isLoggedIn, update
 
 // Retrieve / Add / Delete  savedSpells for user
 router.route('/spells')/* .get(isLoggedIn, getSpells) */.put(/* isLoggedIn, */ addSpell).delete(/* isLoggedIn */ deleteSpell);
+
+// Retrieve / Add / Delete  savedElixirs for user
+router.route('/elixirs')/* .get(isLoggedIn, getSpells) */.put(/* isLoggedIn, */ addElixir).delete(/* isLoggedIn */ deleteElixir);
 
 module.exports = router; 
