@@ -4,12 +4,12 @@ const bcrypt = require("bcryptjs");
 
 module.exports = {
 
-    registerOneUser : async (username, email, password, gender, house) => {
+    registerOneUser: async (username, email, password, gender, house) => {
 
         let result = {};
 
         //check if user exists
-        const userExists = await User.findOne({email});
+        const userExists = await User.findOne({ email });
         if (userExists) {
             throw new Error("Email already in use!");
         }
@@ -28,29 +28,29 @@ module.exports = {
         });
 
         if (user) {
-           (result.success = true), (result.message = "User created successfully");
-           result.data = {
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            gender: user.gender, 
-            house: user.house
-           };
+            (result.success = true), (result.message = "User created successfully");
+            result.data = {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                gender: user.gender,
+                house: user.house
+            };
         }
         return result;
     },
 
-    loginOneUser : async (/* userId,  */email, password) => { 
+    loginOneUser: async (/* userId,  */email, password) => {
 
         //check for user
 
-        const user = await User.findOne ({ email });
+        const user = await User.findOne({ email });
         if (!user) {
             throw new Error(`Your email is incorrect. Please try again.`);
         }
 
         const passwordCheck = await bcrypt.compare(password, user.password);
-        
+
         if (!passwordCheck) {
             throw new Error("The password you entered is incorrect. Please try again.");
         }
@@ -60,25 +60,25 @@ module.exports = {
                 id: user._id,
                 email: user.email,
             };
-          
-        const token = jwt.sign(loginData, process.env.TOKEN_KEY, {
-            expiresIn: "30d",
-        });
+
+            const token = jwt.sign(loginData, process.env.TOKEN_KEY, {
+                expiresIn: "30d",
+            });
 
             const returnData = {
                 id: user._id,
-                name : user.username,
+                name: user.username,
                 email: user.email,
                 gender: user.gender,
                 house: user.house,
                 token: token
             }
 
-        return returnData;
+            return returnData;
         }
     },
 
-    getUserProfile: async (user) => { 
+    getUserProfile: async (user) => {
 
         const userProfile = await User.findById(user);
         if (!userProfile) {
@@ -88,8 +88,8 @@ module.exports = {
         return userProfile;
     },
 
-    updateUserProfile: async (user, body) => { 
-        
+    updateUserProfile: async (user, body) => {
+
         const _id = user
 
         const userExists = await User.findOne(_id);
@@ -101,7 +101,7 @@ module.exports = {
         const updateProfile = await User.findOneAndUpdate(_id, body, {
             new: true,
         });
-  
+
         return updateProfile;
     },
 
@@ -110,28 +110,28 @@ module.exports = {
         const userExists = await User.findById(user);
         if (!userExists) {
             throw new Error("User not found");
-        } 
+        }
 
-/*         const expiryToken = {
-                token: expiredToken(userExists._id),
-            }; */
+        /*         const expiryToken = {
+                        token: expiredToken(userExists._id),
+                    }; */
 
-            const loginData = {
-                id: user._id,
-                email: user.email,
-            };
+        const loginData = {
+            id: user._id,
+            email: user.email,
+        };
 
-            const expiredToken = jwt.sign(loginData, process.env.TOKEN_KEY, {
-                expiresIn: "1ms",
-            });
+        const expiredToken = jwt.sign(loginData, process.env.TOKEN_KEY, {
+            expiresIn: "1ms",
+        });
 
-            return expiredToken;
-        },
+        return expiredToken;
+    },
 
 
-        addOneSpell: async ( user, body ) => {
+    addOneSpell: async (user, body) => {
 
-            const userExists = await User.findById(user);
+        const userExists = await User.findById(user);
         if (!userExists) {
             throw new Error(`User ${user} not found`);
         } else if (userExists.spells.some((item) => item.id == body.id) === true) {
@@ -139,43 +139,45 @@ module.exports = {
         }
 
 
-        const newSpell = await User.findByIdAndUpdate(user, {$push: {
-            spells: body
-        }
-     },
-           { 
+        const newSpell = await User.findByIdAndUpdate(user, {
+            $push: {
+                spells: body
+            }
+        },
+            {
                 new: true
             });
-    
-            
-            await newSpell.save();
-            return newSpell;
-        },
-    
-        deleteOneSpell: async ( user, body ) => {
 
-            const userExists = await User.findById(user);
+
+        await newSpell.save();
+        return newSpell;
+    },
+
+    deleteOneSpell: async (user, body) => {
+
+        const userExists = await User.findById(user);
         if (!userExists) {
             throw new Error(`User ${user} not found`);
-        } 
-
-
-        const removeSpell = await User.findByIdAndUpdate(user, {$pull: {
-            spells: {id: body}
         }
-     },
-           { 
+
+
+        const removeSpell = await User.findByIdAndUpdate(user, {
+            $pull: {
+                spells: { id: body }
+            }
+        },
+            {
                 multi: true,
                 new: true,
-            }); 
-            
-            await removeSpell.save();
-            return removeSpell;
-        },
+            });
 
-        addOneElixir: async ( user, body ) => {
+        await removeSpell.save();
+        return removeSpell;
+    },
 
-            const userExists = await User.findById(user);
+    addOneElixir: async (user, body) => {
+
+        const userExists = await User.findById(user);
         if (!userExists) {
             throw new Error(`User ${user} not found`);
         } else if (userExists.elixirs.some((item) => item.id == body.id) === true) {
@@ -183,39 +185,40 @@ module.exports = {
         }
 
 
-        const newElixir = await User.findByIdAndUpdate(user, {$push: {
-            elixirs: body
-        }
-     },
-           { 
+        const newElixir = await User.findByIdAndUpdate(user, {
+            $push: {
+                elixirs: body
+            }
+        },
+            {
                 new: true
             });
-    
-            
-            await newElixir.save();
-            return newElixir;
-        },
-    
-        deleteOneElixir: async ( user, body ) => {
 
-            const userExists = await User.findById(user);
+
+        await newElixir.save();
+        return newElixir;
+    },
+
+    deleteOneElixir: async (user, body) => {
+
+        const userExists = await User.findById(user);
         if (!userExists) {
             throw new Error(`User ${user} not found`);
-        } 
-
-
-        const removeElixir = await User.findByIdAndUpdate(user, {$pull: {
-            elixirs: {id: body}
         }
-     },
-           { 
+
+        const removeElixir = await User.findByIdAndUpdate(user, {
+            $pull: {
+                elixirs: { name: body.name }
+            }
+        },
+            {
                 multi: true,
                 new: true,
-            }); 
-            
-            await removeElixir.save();
-            return removeElixir;
-        },
+            });
+
+        await removeElixir.save();
+        return removeElixir;
+    }
 
 
 }; 

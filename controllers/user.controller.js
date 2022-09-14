@@ -233,7 +233,7 @@ const deleteElixir = async(req, res) => {
 
     try {
         const data = await deleteOneElixir(user, body);
-        result.message = `Elixir id ${body} deleted!`;
+        result.message = `Elixir name ${body.name} deleted!`;
         result.status = 201;
         result.data = data;
         console.log(body)
