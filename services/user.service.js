@@ -11,7 +11,7 @@ module.exports = {
         //check if user exists
         const userExists = await User.findOne({email});
         if (userExists) {
-            throw new Error("User already exists");
+            throw new Error("Email already in use!");
         }
 
         //hash password
@@ -46,13 +46,13 @@ module.exports = {
 
         const user = await User.findOne ({ email });
         if (!user) {
-            throw new Error(`User with email ${email} not found!`);
+            throw new Error(`Your email is incorrect. Please try again.`);
         }
 
         const passwordCheck = await bcrypt.compare(password, user.password);
         
         if (!passwordCheck) {
-            throw new Error("Password does not match");
+            throw new Error("The password you entered is incorrect. Please try again.");
         }
 
         if (passwordCheck) {
@@ -134,7 +134,9 @@ module.exports = {
             const userExists = await User.findById(user);
         if (!userExists) {
             throw new Error(`User ${user} not found`);
-        } 
+        } else if (userExists.spells.some((item) => item.id == body.id) === true) {
+            throw new Error(`${body.name} already saved!`)
+        }
 
 
         const newSpell = await User.findByIdAndUpdate(user, {$push: {
@@ -176,7 +178,9 @@ module.exports = {
             const userExists = await User.findById(user);
         if (!userExists) {
             throw new Error(`User ${user} not found`);
-        } 
+        } else if (userExists.elixirs.some((item) => item.id == body.id) === true) {
+            throw new Error(`${body.name} already saved!`)
+        }
 
 
         const newElixir = await User.findByIdAndUpdate(user, {$push: {
