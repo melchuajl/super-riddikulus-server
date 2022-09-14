@@ -156,7 +156,7 @@ const addSpell = async(req, res) => {
 
     try {
         const data = await addOneSpell(user, body);
-        result.message = `${body} saved!`;
+        result.message = `${body.name} saved!`;
         result.status = 201;
         result.data = data;
         console.log(body)
