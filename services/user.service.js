@@ -208,7 +208,7 @@ module.exports = {
 
         const removeElixir = await User.findByIdAndUpdate(user, {
             $pull: {
-                elixirs: { name: body.name }
+                elixirs: {id: body}
             }
         },
             {
