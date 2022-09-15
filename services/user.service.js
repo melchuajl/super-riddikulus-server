@@ -67,7 +67,7 @@ module.exports = {
 
             const returnData = {
                 id: user._id,
-                name: user.username,
+                username: user.username,
                 email: user.email,
                 gender: user.gender,
                 house: user.house,
@@ -88,22 +88,49 @@ module.exports = {
         return userProfile;
     },
 
-    updateUserProfile: async (user, body) => {
+    updateUserPassword: async(user, oldPass, newPass, confirmPass) => {
 
-        const _id = user
+        const userExists = await User.findById(user);
+        if (!userExists) {
+            throw new Error(`User ${user} not found`);
+        } else if (newPass !== confirmPass) {
+            throw new Error (`New Passwords does not match!`)
+        } else if (!oldPass || !newPass || !confirmPass){
+            throw new Error (`Please input Password!`)
+        }
 
-        const userExists = await User.findOne(_id);
+        const passwordCheck = await bcrypt.compare(oldPass, userExists.password);
+        
+        if (!passwordCheck) {
+            throw new Error("The old password you entered is incorrect. Please try again.");
+        }
 
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPass, salt);
+
+        const updatePassword = await User.findByIdAndUpdate(user, {password:hashedPassword}, {
+            new: true,
+        });
+  
+        return updatePassword;
+    },
+
+    updateUserProfile: async (user, body) => { 
+        
+        const userExists = await User.findById(user);
+        console.log('User', user)
         if (!userExists) {
             throw new Error("User not found");
         }
 
-        const updateProfile = await User.findOneAndUpdate(_id, body, {
+        const updateProfile = await User.findByIdAndUpdate(user, body, {
             new: true,
         });
-
+  
+        updateProfile.save();
         return updateProfile;
     },
+
 
     logoutOneUser: async (user) => {
 
