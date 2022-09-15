@@ -27,7 +27,7 @@ module.exports = {
             next();
         } catch (error) {
             res.status(401);
-            throw new Error("not authorized");
+            console.error("not authorized");
         }
     }
 
